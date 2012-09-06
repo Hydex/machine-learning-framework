@@ -1,0 +1,214 @@
+Machine Learning Javascript Suite TODO:
+
+ML:
+	- Implement visualisations
+	- Clean up the code base
+	- Implement logistic regression
+	- Implement regularisation to both algorithms
+
+
+
+
+Definition of Machine Learning:
+	A machine is said to learn from experience E with respect to some task T and some performance measure P, if it's performance on T as measured by P improves with experience E.
+	
+Types of Machine Learning: Supervised/Unsupervised learning, reinforcement learning, recommender systems.
+
+
+Supervised Learning: (i.e the computer is told the 'right' answers for training data)
+	- Regression problems (output belongs to a continuous set)
+	- Classification problems (output belongs to a discrete set)
+	
+	
+
+Machine Learning:
+
+	Notation:
+		m						The number of training examples
+		n						The number of features (i.e the size of the x and $ arrays)
+		x						The input variable
+		y						The output variable
+		$						The attributes/coefficients
+		a						The gradient descent learning rate
+		r						The degree of regularisation
+		
+		(x,y)					A single training example
+		(x[i], y[i])			The i'th training example
+		x[i][j]					The value of the j'th feature in the i'th training example
+		
+		h$(x)					The hypothesis (shorthand h(x))
+		J($)					The cost function
+		
+		sum(i = a...b, ___)		The sum of ___'s over the range a to b (iteration referenced by i)
+		sum(a...b, ___)			The sum of ___'s over the range a to b (shorthand, iteration is referenced by b)
+		D(x, ___)				Derivative over x
+		T(x)					Matrix transpose of x
+
+	Equations:
+		Hypothesis:
+			Linear:					h$(x) = T($)x
+			Logistic:				h$(x) = g(T($)x)
+		Gradient Descent
+			General:				$[j] := $[j] - a * D($[j], J($))
+			Normal:					$[j] := $[j] - (a/m)sum(i = 1...m, (h(x[i]) - y[i])x[i][j])
+			Regularised:			$[j] := $[j] - (a/m)sum(i = 1...m, (h(x[i]) - y[i])x[i][j]) - (ar$[j]/m)
+		Cost Functions
+			Unregularised:			J($) = (1/m) * sum(i = 1...m, cost(h(x[i]), y[i]))
+			Linear Regularised:		J($) = (1/m) * sum(i = 1...m, cost(h(x[i]), y[i])) + (r * sum(j = 1...m, $[j]^2))
+			Logistic Regularised:	J($) = (1/m) * sum(i = 1...m, cost(h(x[i]), y[i])) + ((r/2m) * sum(1...j, $[j]^2))
+		Subcost Functions
+			Linear:					cost(x,y) = ((x-y)^2)/2
+			Logistic:				cost(x,y) = -ylog(x) - (1-y)log(1-x)
+		Misc
+			Sigmoid Function:		g(z) = 1/(1+e^-z)
+
+	Flow of data:
+		The "training set" is passed into a "learning algorithm" which is used to generate a "hypothesis"
+		A single input variable "x" is passed into the "hypothesis" which outputs a single output variable "y"
+		
+	Measuring the quality of a particular hypothesis:
+		The output of the cost function indicates the quality of the hypothesis (lower is better)
+		When the output of the cost function is at it's minimum, the hypothesis is optimal for that particular training data
+		
+	Feature Scaling
+		When using gradient descent, it's a good idea to scale features such that they lie approximately between -1 and 1, with a mean of 0.
+		Do this by subtracting the mean value of the feature across the training set, from the feature (so the mean is 0), and dividing by the maximum (so the value maxes out at about 1)
+		
+	Figuring out the learning rate
+		When deciding on a learning rate, try adjusting by about multiples of 3.
+		If the algorithm is taking too long to converge, increase the learning rate
+		If the algorithm isn't converging at all, lower the learning rate
+
+	Overfitting:
+		When the learning algorithm binds itself too tightly to the training set, it matches every training example perfectly, but fails on real data.
+		This can happen due to having too many features.
+		Regularisation:
+			If you have an overfitting problem, you can mitigate it by making certain features smaller, you do this by adding extra cost to those features in the cost function (i.e add +1000$[4] to the end of the cost function to penalise $[4] and make it smaller)
+
+	Polynomial Regression:
+		Not generally used because it's easy to overfit the data, and too computationally expensive. Neural networks are used instead
+			
+	Logistic hypothesis:
+		This version of the hypothesis is interpreted slightly differently.
+		h$(x) is the probability that y = 1 for the given x
+
+	Multiclass Classification:
+		Define one hypothesis for each classification class (h$1(x), h$2(x) etc) which is a hypothesis for that class (positive) vs the rest of the classes (negative). This will give you the probability for each one.
+
+	There are alternative algorithms to gradient descent, like Conjugate gradient, BFGS and L-BFGS
+
+	Neural Networks:
+
+		Terminology:
+			a[i][j]		The activation of neuron j in layer i
+			&[j]		Matrix of parameters mapping from layer j to layer j+1
+			&[i][j][k]	The kth parameter in the jth neuron in the ith layer
+			x[k]		The kth input into a neuron
+			L			Number of layers in the network
+			s[l]		Number of units (not counting the bias unit) in the layer l
+			K			Number of outputs
+			h$n(x)		The nth hypothesis (output node)
+			y[i][j]		The jth answer in the ith training example
+			d[i][j]		The error of the jth node in the ith layer
+
+		Equations:
+			Activation:
+				a[i][j] = g(z[i][j])
+				z[i][j] = sum(0...k, &[i][j][k]x[k])
+			Cost Function:
+				J(&) = (1/m)sum(i = 1...m, sum(j = 1...K, cost(h&j(x[i]), y[i][j]))) + (r/2m)sum(i = 1...L-1, sum(j = 1...s[i], sum(k = 1...s[i+1], &[i][j][k]^2)))
+
+
+		A neuron is just a computational unit with multiple inputs and a single output (which can be routed to multiple places)
+		In this case, neurons compute via the logistic regression hypothesis, meaning each neuron has it's own set of parameters ($), i.e the "activation function" of the neuron is a sigmoid function
+
+		If a network has s[j] units in layer j, s[j+1] units in layer j+1, then &[j] will have a dimension of (s[j+1]) x (s[j] + 1)
+
+		You can do multiclass classification by having more than one output node.
+
+		Minimizing the cost function: Backpropagation algorithm
+			Forward propagation
+				a[1] = x
+				z[2] = &[1]a[1]
+				a[2] = g(z[2])
+				z[3] = &[2]a[2]
+				a[3] = g(z[3])
+				z[4] = &[3]a[3]
+				a[4] = h&(x) = g(z[4])
+			Back propagation
+				For each output unit: d[L][j] = a[L][j] - y[j]
+				d[4] = a[4] - y
+				d[3] = (T(&[3])d[4]) .* (a[3].*(1-a[3]))
+				d[2] = (T(&[2])d[3]) .* (a[2].*(1-a[2]))
+				D(&[i][j][k], J(&)) = a[i][j]d[i+1][j]
+
+			
+			
+			
+			
+			
+Quantum Computation
+
+	Glossary:
+		Quantization: Constraining a real value to a set of discrete values
+		Qubit: A 2-level quantum system ('quantum bit')
+
+	QC1) Qubits and the Axioms of Quantum Mechanics
+
+		Superposition Axiom
+			If we have a k-level quantum system, there are k 'classic states' the system can be in (0 through k-1)
+			Superposition Principle: If a system can be in one of k states, it can also be in any linear superposition of those k states
+		Measurement Axiom
+			When you measure a superpositioned system, it will quickly pick which state it is in, and that will be the new state of the system
+			
+			
+
+
+
+
+Natural Language Processing
+
+	NLP1) Basic Text Processing
+		Terminology:
+			Corpora				A data set of text
+			Fragments			Part words, such as the first part of a stutter (the 'ma-' in 'ma- mainly')
+			Filled Pauses		i.e 'uh' or 'hmm'
+			Lemma				Two words are in the same lemma if they are the same word but slightly different (i.e 'cat' and 'cats')
+			Lemmatisation		Converting words into their base form (i.e am, are, is -> be)
+			Morpheme			The smallest unit that makes up a word
+				Stem				The core meaning-baring morphemes
+				Affixes				Morphemes affixed to a stem (usually have grammatical meaning)
+			Morphology			The study of morphemes
+			Token				Non-unique word in a sentence
+			Tokenization		Splitting a sentence or phrase into it's tokens
+			Type 				Unique word in a sentence (may be different if you're counting by wordform or lemma, excluding pauses/fragments etc)
+			Stemming			Reducing words to their stems (i.e automate, automatic, automation -> automat)
+			Wordform			Two words have the same wordform if they are identical (i.e 'cat' and 'cat')
+
+
+		Type/Token example
+			I like to cook foods that I have cooked before			10 tokens, 8 types (multiples of I and cook)
+
+		Notation:
+			N					Number of tokens in a word
+			V					'Vocabulary' (the set of types)
+			
+		Porter's Algorithm - The most common stemming algorithm
+			Step 1a
+				'sses' -> 'ss'		caresses -> caress
+				'ies' -> 'i'		ponies -> poni
+				'ss' -> 'ss'		caress -> caress
+				's' -> ''			cats -> cat
+			Step 1b
+				(*v*)ing			walking -> walk
+									sing -> sing
+				(*v*)ed				plastered -> plaster
+				Note: Only remove these suffixes from words with vowels, so words like 'sing' don't become 's'
+			Step 2 (long stems)
+				ational -> ate		relational -> relate
+				izer -> ize			digitizer -> digitize
+				ator -> ate			operator -> operate
+			Step 3 (for longer stems)
+				al -> ''			revival -> reviv
+				able -> ''			adjustable -> adjust
+				ate -> ''			activate -> activ
