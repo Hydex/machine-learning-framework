@@ -8,8 +8,18 @@ package data;
 @SuppressWarnings("serial")
 public class DataAlignmentException extends Exception {
 	
+	private String errorMessage;
+	
+	public DataAlignmentException(String e) {
+		errorMessage = e;
+	}
+	
 	public String toString() {
-		return "Error: Data Alignment Exception";
+		if(errorMessage != null) {
+			return errorMessage;
+		} else {
+			return "DataAlignmentException";
+		}
 	}
 
 }
