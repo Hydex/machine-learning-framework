@@ -18,9 +18,11 @@ public class DataRecord {
 		return data.length + 1;
 	}
 	
-	public double getFeature(int pos) throws DataAlignmentException {
+	public double getFeature(int pos) {
 		if(pos < 0 || pos > data.length) {
-			throw new DataAlignmentException("DataAlignmentException: Tried to access non-existant feature in data record.");
+			System.out.println("Error: Tried to access non-existant feature in data record.");
+			System.exit(1);
+			return 0.0;
 		} else if(pos == 0) {
 			return 1;
 		} else {
