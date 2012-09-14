@@ -12,13 +12,37 @@ public class LinearParameterOptimiser {
 	private double[] parameters;
 	
 	public LinearParameterOptimiser(DataSet d, double[] p) {
+		System.out.println("Linear parameter optimiser initialised");
+		
 		data = d;
 		parameters = p;
 	}
 	
-	// TODO: Write optimise method that makes use of runGradientDescent
+	public void optimise(double learningRate) {
+		System.out.println("Commencing parameter optimisation routine");
+		boolean optimised = false;
+		int iteration = 0;
+		while(!optimised) {
+			// Record the current cost function
+			double curCost = computeCurrentCost();
+			// Run gradient descent
+			runGradientDescent(learningRate);
+			// Record the new cost function, if it's the same, the parameters are optimised
+			double newCost = computeCurrentCost();
+			if(newCost == curCost) optimised = true;
+			
+			iteration++;
+			System.out.println("Completed gradient descent iteration " + iteration + ". Current cost is " + newCost);
+		}
+		// Finished optimising
+		System.out.println("Parameter optimisation complete");
+	}
 	
-	private void runGradientDescent(int learningRate) {
+	public double[] getParameters() {
+		return parameters;
+	}
+	
+	private void runGradientDescent(double learningRate) {
 		// Adjust each parameter simultaneously
 		double[] newParams = new double[parameters.length];
 		for(int i = 0; i < parameters.length; i++) {

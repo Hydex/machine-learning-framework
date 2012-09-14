@@ -13,6 +13,10 @@ public class DataRecord {
 		data = d;
 		result = r;
 	}
+	public DataRecord(double[] d) {
+		data = d;
+		result = 0.0;
+	}
 	
 	public int getLength() {
 		return data.length + 1;
