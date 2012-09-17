@@ -34,7 +34,23 @@ public class DataRecord {
 		}
 	}
 	
+	public void setFeature(int pos, double value) {
+		data[pos-1] = value;
+	}
+	
 	public double getResult() {
 		return result;
+	}
+	
+	public void normaliseMean(double[] featureMeans) {
+		for(int i = 1; i < this.getLength(); i++) {
+			setFeature(i, getFeature(i) - featureMeans[i-1]);
+		}
+	}
+	
+	public void normaliseMax(double[] featureMaximums) {
+		for(int i = 1; i < this.getLength(); i++) {
+			setFeature(i, getFeature(i) / featureMaximums[i-1]);
+		}
 	}
 }

@@ -5,7 +5,7 @@
 package models;
 
 import core.LinearParameterOptimiser;
-import core.Parameterisation;
+import core.Hypothesis;
 import data.DataRecord;
 import data.DataSet;
 
@@ -30,7 +30,9 @@ public class LinearRegressionModel {
 	}
 	
 	public double query(DataRecord r) {
-		return new Parameterisation(r, parameters).compute();
+		r.normaliseMean(data.getFeatureMeans());
+		r.normaliseMax(data.getFeatureMaximums());
+		return Hypothesis.computeLinearHypothesis(r, parameters);
 	}
 	
 	private void learn() {
@@ -38,7 +40,8 @@ public class LinearRegressionModel {
 		
 		// Optimise parameters
 		LinearParameterOptimiser parOpt = new LinearParameterOptimiser(data, parameters);
-		parOpt.optimise(0.001);
+		parOpt.optimise();
+		parameters = parOpt.getParameters();
 	}
 	
 }

@@ -9,11 +9,8 @@ public class Controller {
 		LinearRegressionModel model = new LinearRegressionModel(data);
 		
 		System.out.println("Testing model");
-		
-		// TODO Debug why this isn't working
-		double[] testData = {10.0};
-		System.out.println("Test 1: 20 / " + model.query(new DataRecord(testData)));
-		testData[0] = 41.305;
-		System.out.println("Test 2: 82.61 / " + model.query(new DataRecord(testData)));
+
+		System.out.println("Test 1: 35 / " + model.query(new DataRecord(new double[] {10.0, 15.0} )));
+		System.out.println("Test 2: 164.21 / " + model.query(new DataRecord(new double[] {41.305, 81.60} )));
 	}
 }
