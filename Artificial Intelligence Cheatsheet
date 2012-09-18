@@ -1,0 +1,63 @@
+Artificial Intelligence Cheatsheet
+
+1) Supervised Learning Techniques
+	a) Regression Algorithms
+		i) Linear Regression
+		ii) Logistic Regression
+		iii) Gradient Descent Algorithm
+
+
+
+1) Supervised Learning Techniques
+
+	a) Regression Algorithms
+
+	Step 1) Acquire training data
+		The training data should be a set of records, each containing a set of input values, and the single correct output value for those inputs
+		Incorrect training data will affect the quality of the hypothesis generated
+	Step 2) Apply feature scaling to the set of training data
+		For each feature, calculate the mean value of that feature across the training set, then subtract it from all of the instances of that feature
+		For each feature, calculate the absolute maximum value of that feature across the training set, then divide all the instances of that feature by it
+		This should get all the features within the range -1 to 1, with the mean at 0
+	Step 3) Develop a cost function
+		Develop a cost function that will give you the "cost" or "error" of a hypothesis' result for a given training example versus the supplied correct output for that training example.
+	Step 4) Optimise the hypothesis co-efficients using an optimisation algorithm (such as gradient descent)
+	Step 5) Use the optimised co-efficients with your hypothesis to generate an accurate output
+		Make sure you scale the input features using the same parameters (mean and max) found in step 2
+
+
+		i) Linear Regression
+
+			Linear Hypothesis:
+				h(x,t) = sum(1...n, x[n]t[n] )
+					h(x,t) = output
+					x = input (x[i] = ith input)
+					t = co-efficients (t[i] = ith co-efficient)
+					n = number of inputs
+			Example Cost Function:
+				J(t) = mean(1...m, (h(x[m],t) - y[m])^2)
+					J(t) = cost
+					h(x,t) = linear hypothesis function
+					x[m] = input of training example m
+					y[m] = result of training example m
+					m = number of training examples
+
+		ii) Logistic Regression
+
+			Logistic Hypothesis:
+
+			Example Cost Function:
+
+		iii) Gradient Descent Algorithm
+
+			t[j] := t[j] - a(DJ(t)/Dt[j]) for all j
+				t[j] = jth co-efficient
+				a = learning rate
+				Dx/Dy = derivative of x with respect to y
+				J(t) = cost of hypothesis with the co-efficients 't'
+
+			Repeat until convergence upon optimal values of t
+
+			Learning rate (a):
+				The learning rate controls how quickly gradient descent will converge upon an optimum. However if the learning rate is set too high the algorithm will fail to converge. You can test this by calculating the cost of the co-efficients after each step of gradient descent, if the cost ever goes up, then the learning rate is too high.
+				A good way to find a learning rate is by starting with a high learning rate, and lower it every time you detect gradient descent diverging, lowering it by a factor of 1.2 or so works well for large data sets, though 2 or 3 would be faster for small data sets
