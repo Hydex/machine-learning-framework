@@ -34,6 +34,7 @@ Artificial Intelligence Cheatsheet
 					x = input (x[i] = ith input)
 					t = co-efficients (t[i] = ith co-efficient)
 					n = number of inputs
+
 			Example Cost Function:
 				J(t) = mean(1...m, (h(x[m],t) - y[m])^2)
 					J(t) = cost
@@ -45,6 +46,13 @@ Artificial Intelligence Cheatsheet
 		ii) Logistic Regression
 
 			Logistic Hypothesis:
+				h(x,t) = g(sum(1...n, x[n]t[n]))
+				g(z) = 1 / (1+e^-z)
+					h(x,t) = output
+					x = input (x[i] = ith input)
+					t = co-efficients (t[i] = ith co-efficient)
+					n = number of inputs
+				Returns a number between 0 and 1 indicating the probability of a "true" output as opposed to a "false" one
 
 			Example Cost Function:
 
